@@ -12,10 +12,6 @@
 
 /*CSS Hide*/
 
-#add_block {
+.hide_me {
 	display: none;
-}
-
-#add_record:disabled ~ #add_block {
-	display: block;
 }
