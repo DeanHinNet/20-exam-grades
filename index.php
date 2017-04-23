@@ -16,7 +16,7 @@ if(isset($_SESSION['records']))
 <html>
 <head>
 	<title>Teacher Page</title>
-	<link rel='stylesheet' type='text/css' href='main.css'
+	<link rel='stylesheet' type='text/css' href='main.css'>
 </head>
 <body>
 	<div class='wrapper'>
@@ -24,7 +24,7 @@ if(isset($_SESSION['records']))
 			<h1>Welcome Teacher!</h1>
 			<label>Select Student</label>
 			
-			<button>Show Exam Records</button>
+
 			<form action='process.php' method='post'>
 				<input type='hidden' name='action' value='select_record'>
 				<select name='student_id'>
@@ -39,12 +39,29 @@ if(isset($_SESSION['records']))
 				<input type='submit' value='show'>
 			</form>
 
+			<form action='process.php' method='post'>
+				<input type='hidden' name='action' value='select_all'>
+				<input type='submit' value='Show All Students'>
+			</form>
 		</div>
 		<div class=''>
-			<h2 id='student_name'></h2>
+			<h2 id='student_name'>
+				<?php 
+					if(isset($_SESSION['options']) & $_SESSION['options'] == 'single')
+					{
+						echo "<th>" . $_SESSION['records'][0]['first_name'] . " " . $_SESSION['records'][0]['last_name']. "</th>";
+					}
+				?>
+			</h2>
 			<table border='1'>
 				<thead>
 					<tr>
+						<?php
+						if(isset($_SESSION['options']) && $_SESSION['options'] == 'all')
+						{
+							echo "<th>Student Name</th>";
+						}
+						?>
 						<th>Exam ID</th>
 						<th>Subject</th>
 						<th>Grade</th>
@@ -56,10 +73,15 @@ if(isset($_SESSION['records']))
 				<tbody>
 					<?php
 					if(isset($_SESSION['records']))
-					{
+					{	
 						foreach($_SESSION['records'] as $record)
 						{
 							echo "<tr>";
+
+								if($_SESSION['options'] == 'all')
+								{
+									echo "<td>" . $record['first_name'] . " " . $record['last_name'] . "</td>";
+								}
 								echo "<td>" . $record['exam_id'] . "</td>";
 								echo "<td>" . $record['subject'] . "</td>";
 								echo "<td>" . $record['grade'] . "</td>";
@@ -80,6 +102,49 @@ if(isset($_SESSION['records']))
 				</tbody>
 			</table>
 			<button id='add_record'>Add a Record</button>
+			
+			<div id='add_block' disabled>
+				<form action='process.php' method='post'>
+					<select name='student_id'>
+						<option value=''>Choose Student</option>
+						<option value=''>New Student</option>
+						<?php
+							foreach($students as $student)
+							{
+								echo "<option value='".$student['id']."'>".$student['first_name']." ".$student['last_name']."</option>";
+							}
+						?>
+					</select>
+					<section>
+						<label for='first_name'>First Name</label>
+						<input id='new_first' type='text' name='first_name'>
+					</section>
+					<section>
+						<label for='last_name'>Last Name</label>
+						<input id='new_last' type='text' name='last_name'>
+					</section>
+					<section>
+						<label for='subject'>Subject</label>
+						<input id='add_subject' type='text' name='subject'>
+					</section>
+					<section>
+						<label for='grade'>Grade</label>
+						<input id='add_grade' type='text' name='grade'>
+					</section>
+					<section>
+						<label for='date_taken'>Date Taken</label>
+						<input id='add_date' type='text' name='date_taken'>
+					</section>
+					<section>
+						<label for='exam_name'>Exam Name</label>
+						<input id='add_name' type='text' name='exam_name'>
+					</section>
+
+					<input type='hidden' name='action' value='add_record'>
+					<input type='submit' value='show'>
+				</form>
+			</div>
+
 		</div>
 	</div>
 </body>

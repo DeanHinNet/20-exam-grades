@@ -1,0 +1,21 @@
+#add_block form section input {
+	display: block;
+}
+
+#add_block form input {
+	display: block;
+}
+
+#add_block form section {
+	display: inline-block;
+}
+
+/*CSS Hide*/
+
+#add_block {
+	display: none;
+}
+
+#add_record:disabled ~ #add_block {
+	display: block;
+}
