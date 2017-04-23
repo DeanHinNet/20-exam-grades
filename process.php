@@ -64,6 +64,31 @@ if(isset($_POST['action']) && $_POST['action'] == 'add_record')
 //When the delete button is hit, it will delete the specific record.
 if(isset($_POST['action']) && $_POST['action'] == 'delete_record')
 {
+
+	$query = "SELECT students_id FROM students_has_exams WHERE exams_idexams = {$_POST['exam_id']}";
+
+	$result = fetch_record($query);
+
+	$student_id = $result['students_id'];
 	
+	$query = "DELETE FROM students_has_exams WHERE exams_idexams = {$_POST['exam_id']}";
+	run_mysql_query($query);
+
+	$query = "DELETE FROM exams WHERE idexams = {$_POST['exam_id']}";
+	run_mysql_query($query);
+
+	$query = "SELECT students.id AS student_id, first_name, last_name, exams.name AS exam_name, exams.grade, exams.idexams AS exam_id, exams.subject, exams.notes
+	FROM students_has_exams
+	LEFT JOIN students ON students.id=students_has_exams.students_id
+	RIGHT JOIN exams ON exams.idexams=students_has_exams.exams_idexams
+	WHERE students.id= {$student_id}";
+
+	$results = fetch_all($query);
+	$_SESSION['options'] = 'single';
+	$_SESSION['records'] = $results;
+	header('location: index.php');
+	exit();
 }
+
+//Log Off
 ?>

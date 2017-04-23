@@ -7,7 +7,7 @@ $students = fetch_all($query);
 
 //$cheese = 'banana';
 //echo $query;
-//var_dump($students);
+
 if(isset($_SESSION['records']))
 {
 	
@@ -22,6 +22,10 @@ if(isset($_SESSION['records']))
 	<div class='wrapper'>
 		<div class='header'>
 			<h1>Welcome Teacher!</h1>
+			<form action='logoff.php' method='post'>
+				<input type='hidden' name='action' value='log_off'>
+				<input type='submit' value='Log Off'>
+			</form>
 			<label>Select Student</label>
 			
 
